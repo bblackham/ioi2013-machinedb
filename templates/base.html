@@ -1,0 +1,61 @@
+{% set url_root = '' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript">
+<!--
+var url_root = "{{ url_root }}";
+-->
+        </script>
+        <link rel="shortcut icon" href="{{ url_root }}/static/favicon.ico" />
+        <script type="text/javascript" src="{{ url_root }}/static/jq/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="{{ url_root }}/static/js/bootstrap.js"></script>
+        <script type="text/javascript" src="{{ url_root }}/static/script_new.js"></script>
+        <link rel="stylesheet" href="{{ url_root }}/static/css/bootstrap.css">
+        <link rel="stylesheet" href="{{ url_root }}/static/style_new.css">
+
+        <title>IOI 2013 Machine Setup</title>
+
+    </head>
+    <body id="body">
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="{{ url_root }}/">IOI 2013 Machine Setup</a>
+                    <p class="navbar-text pull-right">
+                        Your IP: <strong>{{ ip_address }}</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+            {% if show_sidebar %}
+                <div class="span3">
+                    <div class="well" style="padding: 8px 0;">
+                        <ul class="nav nav-list">
+
+                            <li{% if request.path == '/' %} class="active"{% end %}>
+                                <a href="{{ url_root }}/">Configure</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div style="margin-top: 140px; text-align: center;">
+                        {% if location_for_ip %}
+                        <div>Based on this machine's <i>current</i> IP address, it is at location:</div>
+                        <div style="padding-top: 48px; font-size: 128px; font-weight: bold;">
+                            {{ location_for_ip }}
+                        </div>
+                        {% end %}
+                    </div>
+                </div>
+            {% end %}
+    {% block core %}{% end %}
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,44 @@
+{% extends base.html %}
+{% block core %}
+
+<div class="span9">
+
+<h2>Machine OS image version</h2>
+
+<div class="row">
+    <div class="span6">
+
+    {% if success != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-success notification">
+                <h4 class="alert-heading">{{ success }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    {% if warning != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-error notification">
+                <h4 class="alert-heading">{{ warning }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    <form action="/imagever" method="POST" >
+    <table>
+      <tr>
+        <td>Current OS Image Version</td>
+        <td><input type="text" name="current_image_version" value="{{ current_image_version }}" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" class="btn btn-warning">Update OS Image Version</button></td>
+      </tr>
+    </table>
+    </form>
+    
+    </div>
+</div>
+
+{% end %}
+

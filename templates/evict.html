@@ -1,0 +1,56 @@
+{% extends base.html %}
+{% block core %}
+
+<div class="span9">
+
+<h2>Evict Machine at Switch Port</h2>
+
+<div class="row">
+    <div class="span6">
+
+    {% if success != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-success notification">
+                <h4 class="alert-heading">{{ success }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    {% if warning != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-error notification">
+                <h4 class="alert-heading">{{ warning }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    <h3>Log:</h3>
+    <p>
+    {% for log_row in log %}
+        {{ log_row }} <br>
+    {% end %}
+    </p>
+
+    <h3>Enter a SwitchName/Port to free:</h3>
+    <form action="/evict" method="POST" >
+    <table>
+      <tr>
+        <td>Switch Name</td>
+        <td><input type="text" name="switchname" value="{{ switchname }}" /></td>
+      </tr>
+      <tr>
+        <td>Switch Port</td>
+        <td><input type="text" name="switchport" value="{{ switchport }}" /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" class="btn btn-warning">Evict</button></td>
+      </tr>
+    </table>
+    </form>
+    
+    </div>
+</div>
+
+{% end %}
+

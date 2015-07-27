@@ -1,0 +1,55 @@
+{% extends base.html %}
+{% block core %}
+
+<div class="span9">
+
+<h2>Access Restriction Control</h2>
+
+<div class="row">
+    <div class="span6">
+
+    {% if success != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-success notification">
+                <h4 class="alert-heading">{{ success }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    {% if warning != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-error notification">
+                <h4 class="alert-heading">{{ warning }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    <h2>WARNING</h2>
+    <b>DISABLE THIS WITH CARE. CONTESTANTS MACHINES WILL BE ALLOWED TO DO EVERYTHING IF THIS IS DISABLED.</b>
+    <b>ADMIN MACHINES WITHOUT A LOCATION MAPPING ARE AUTOMATICALLY GIVEN ACCESS.</b>
+    <b>THIS OPTION IS ONLY FOR USE DURING SETUP.</b>
+    <p>
+    
+    <h2>NOTE</h2>
+    <b>This flag is per-instance per-session. During setup you may want to enable this for all instances of the server.</b>
+    
+    <p>
+    <form action="/access" method="POST" >
+    <table>
+      <tr>
+        <td>
+            <input type="checkbox" name="access_restriction_checkbox" value="access_restriction_checkbox" {{ restricted_access_only_checkbox }} />
+            MachineDB Service Restriction
+        </td>
+      </tr>
+      <tr>
+        <td><button type="submit" class="btn btn-danger">Update Access Restriction</button></td>
+      </tr>
+    </table>
+    </form>
+    
+    </div>
+</div>
+
+{% end %}
+

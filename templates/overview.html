@@ -1,0 +1,138 @@
+{% extends base.html %}
+{% block core %}
+
+<style>
+.machine-grid>tbody>tr>td {
+    width:  2.8em;
+    height: 2em;
+    display: inline-block;
+    text-align: center;
+}
+
+.machine-grid {
+    border: 1px solid #dddddd;
+    margin: auto;
+}
+
+/* Separators */
+.underlined-row,
+.machine-grid>tbody>tr:nth-child(2),
+.machine-grid>tbody>tr:nth-child(7),
+.machine-grid>tbody>tr:nth-child(12),
+.machine-grid>tbody>tr:nth-child(17) {
+    border-bottom: 1px solid #dddddd;
+}
+
+.rightborder-col,
+.machine-grid>tbody>tr>td:nth-child(6),
+.machine-grid>tbody>tr>td:nth-child(15) {
+    border-right: 1px solid #dddddd;
+}
+
+/* Non-existent things */
+.missing-location {
+    background-color: #f0f0f0;
+}
+
+.grid-label {
+    font-weight: bold;
+}
+
+#yah {
+    font-size: 2em;
+    font-weight: bold;
+    color: orange;
+
+    line-height: 1em;
+    text-align: center;
+
+    position: absolute;
+    top: 190px;
+}
+
+#time {
+    font-size: 7em;
+    text-align: center;
+
+    position: absolute;
+    top: 5em;
+}
+
+h2 {
+    font-size: 3em;
+    margin-top: 0;
+    text-align: center;
+}
+</style>
+
+<script type="text/javascript">
+Date.prototype.timeNow = function(){
+         return ((this.getHours() < 10)?"0":"") + this.getHours() +":"+ ((this.getMinutes() < 10)?"0":"") + this.getMinutes();
+};
+
+function scheduleReload() {
+    $('#time').text((new Date()).timeNow());
+    $('#machine-grid').load('/overview #machine-grid-inner');
+
+    setTimeout(scheduleReload, 10000);
+}
+
+$(document).ready(function() {
+    scheduleReload();
+});
+</script>
+
+<div class="row">
+
+<div class="span12" id="machine-grid"><div id="machine-grid-inner">
+    <h2>Machine status</h2>
+
+    <div class="row" style="font-size: 1.3em; line-height: 1.1em">
+        <p class="span6" style="text-align: center">
+            <span class="text-success">{{cnt_left_up}} up</span>
+            <br>
+            <span class="text-error">{{cnt_left_down}} down
+            and {{ cnt_left_missing }} missing</span>
+        </p>
+
+        <p class="span6" style="text-align: center">
+            <span class="text-success">{{cnt_right_up}} up</span>
+            <br>
+            <span class="text-error">{{cnt_right_down}} down
+            and {{ cnt_right_missing }} missing</span>
+        </p>
+    </div>
+
+    <div class="progress">
+        {% for k,v in bars.iteritems() %}
+            <div class="bar bar-{{k}}" style="width: {{v}}%"></div>
+        {% end %}
+    </div>
+
+    <table class="machine-grid"><tbody>
+        <tr class="underlined-row">
+            <td class="rightborder-col"></td>
+            {% for col_id in cols %} <td class="grid-label"> {{ col_id }}</td> {% end %}
+        </tr>
+        {% for row_id in rows %} <tr>
+            <td class="grid-label rightborder-col">{{ row_id }}</td>
+            {% for col_id in cols %} <td class="{{ 'missing-location' if (row_id, col_id) not in locations else '' }}">
+                {% if (row_id, col_id) in machines %}
+                    {% set machine = machines.get((row_id, col_id), None) %}
+                    {% set status = machine.status %}
+                    {% if machine is not None %}
+                        <a class="btn btn-mini {{ classes[(row_id, col_id)] }}" href="/machine?id={{ machine.id }}">
+                            {{ status.status + ' ' + status.image_version if status is not None else 'wtf' }}
+                        </a>
+                    {% else %}
+                        <span class="label">x</span>
+                    {% end %}
+                {% end %}
+            </td> {% end %}
+        </tr> {% end %}
+    </tbody></table>
+</div></div>
+
+</div>
+
+{% end %}

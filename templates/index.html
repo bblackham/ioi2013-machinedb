@@ -1,0 +1,104 @@
+{% extends base.html %}
+{% block core %}
+
+<div class="span9">
+
+<!--
+<div class="page-header">
+    <h1>{{ _("Configure") }}</h1>
+</div>
+-->
+
+{% if machine is None %}
+<h2>{{ _("New Machine") }}</h2>
+{% else %}
+<h2>{{ _("Machine Settings") }}</h2>
+{% end %}
+<div class="row">
+    <div class="span6">
+
+    {% if success != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-success notification">
+                <h4 class="alert-heading">{{ success }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    {% if warning != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-error notification">
+                <h4 class="alert-heading">{{ warning }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+{% if arp_entry is not None %}
+
+    <form action="/" method="POST" >
+    <table>
+      <tr>
+        <td>Asset Number</td>
+        <td><input type="text" name="asset_number" value="{{ asset_number }}" /></td>
+      </tr>
+      <tr>
+        <td>Location</td>
+        <td><input type="text" name="location" value="{{ location }}" /></td>
+      </tr>
+      <tr>
+        <td>Notes (e.g. damage, etc)</td>
+        <td><textarea name="notes" rows="4" cols="60">{{ notes }}</textarea></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" class="btn btn-warning">Update Information</button></td>
+      </tr>
+    </table>
+    </form>
+
+    <hr/>
+  {% if network_unknown %}
+    <div class="span5 alert alert-block alert-error">
+        This machine is connected to the UNKNOWN network!<br/>
+        Once you have entered the location information above:
+        <ol>
+            <li> Reconnect Network Manager by pressing two arrows in top-right corner and pressing "Wired Connection 1"</li>
+            <li> If above fails, pull out the BLUE cable, wait a few seconds, and put it back in</li>
+            <li> <a href="/">Click to reload this page</a></li>
+            <li> If this message does not disappear, contact tech support.</li>
+        </ol>
+    </div>
+    <hr/>
+    <div class="span9">
+    MAC address: <b>{{ arp_entry.mac_address }}</b>.<br/>
+    I am connected to <b>{{ arp_entry.switch.name }}</b> on port <b>{{ arp_entry.switch_port }}</b>.
+    </div>
+  {% else %}
+    <div class="span5 alert alert-block alert-success">
+        This machine is connected to the contestant network. This is good.<br/>
+        Please ensure you have completed the checklist for this machine:
+        <ol>
+            <li> Configured BIOS correctly</li>
+            <li> Connect USB keyboard</li>
+            <li> Connect USB mouse</li>
+            <li> Make note of any damage (in field above)</li>
+        </ol>
+    </div>
+    <hr/>
+    <div class="span9">
+    MAC address: <b>{{ arp_entry.mac_address }}</b>.<br/>
+    I am connected to <b>{{ arp_entry.switch.name }}</b> on port <b>{{ arp_entry.switch_port }}</b>.
+    </div>
+  {% end %}
+{% else %}
+
+    <div class="span5 alert alert-block alert-error">
+        <b>This machine is not connected to a known switch port. Please contact tech support!</b>
+    </div>
+
+{% end %}
+
+    </div>
+</div>
+
+{% end %}

@@ -1,0 +1,51 @@
+{% extends base.html %}
+{% block core %}
+
+<div class="span9">
+
+<h2>Machine Information</h2>
+
+<div class="row">
+    <div class="span6">
+
+    {% if success != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-success notification">
+                <h4 class="alert-heading">{{ success }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    {% if warning != "" %}
+        <div id="notifications" class="notifications">
+            <div class="alert alert-block alert-error notification">
+                <h4 class="alert-heading">{{ warning }}</h4>
+            </div>
+        </div>
+    {% end %}
+
+    <table>
+      <tr> <td>Machine ID</td><td>{{ id }}</td> </tr>
+      <tr> <td>IP Address</td><td>{{ ip }}</td> </tr>
+      <tr> <td>Location</td><td>{{ location }}</td> </tr>
+      <tr> <td>MAC Address</td><td>{{ mac_address }}</td> </tr>
+      <tr> <td>Asset Number</td><td>{{ asset_number }}</td> </tr>
+      <tr> <td>Notes</td><td>{{ notes }}</td> </tr>
+      <tr> <td>Machine Image Version</td><td>{{ image_version }} ( {{ current_image_version }} )</td> </tr>
+      <tr> <td>Status</td><td>{{ status }}</td> </tr>
+      <tr> <td>Last Heartbeat</td><td>{{ last_heartbeat }}</td> </tr>
+      <tr> <td>Switch Port</td><td>{{ switchport }}</td> </tr>
+      <tr> <td>Switch Name</td><td>{{ switchname }}</td> </tr>
+      <tr> <td>Switch Location</td><td>{{ switchlocation }}</td> </tr>
+      <tr> <td>Switch IP</td><td>{{ switchip }}</td> </tr>
+    </table>
+    
+    <form action="/overview" method="GET" >
+        <button type="submit" class="btn btn-warning">Overview</button>
+    </form>
+    
+    </div>
+</div>
+
+{% end %}
+
